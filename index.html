@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPI PAI SMP - Fikih Shalat Sunnah & Jenazah</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Poppins & Amiri) -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            800: '#065f46',
+                            900: '#064e3b',
+                            700: '#047857',
+                            600: '#059669',
+                            50: '#ecfdf5',
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        arabic: ['Amiri', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .pattern-bg {
+            background-color: #064e3b;
+            background-image: radial-gradient(#10b981 0.75px, transparent 0.75px), radial-gradient(#10b981 0.75px, #064e3b 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0,15px 15px;
+        }
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            line-height: 2.2;
+        }
+        .tab-btn.active {
+            background-color: #047857;
+            color: white;
+            border-bottom: 4px solid #facc15;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
+
+    <!-- HEADER / NAVIGATION BAR -->
+    <header id="main-header" class="hidden bg-emerald-900 text-white shadow-md sticky top-0 z-50 border-b-2 border-gold-500">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('menu')">
+                <div class="w-10 h-10 rounded-full bg-gold-500 text-emerald-900 flex items-center justify-center font-bold text-xl shadow">
+                    <i class="fas fa-mosque"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm md:text-base leading-tight text-gold-400">FIKIH INTERAKTIF</h1>
+                    <p class="text-xs text-emerald-200">PAI Kelas VIII/IX SMP</p>
+                </div>
+            </div>
+
+            <!-- Student Info & Progress Indicator -->
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:block text-right">
+                    <div id="header-student-name" class="text-xs font-semibold text-white">Siswa</div>
+                    <div class="w-32 bg-emerald-950 rounded-full h-2 mt-1 overflow-hidden border border-emerald-700">
+                        <div id="study-progress-bar" class="bg-gold-400 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+                <button onclick="navigateTo('menu')" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 rounded-lg text-xs font-medium flex items-center gap-1 transition">
+                    <i class="fas fa-home"></i> <span class="hidden md:inline">Menu Utama</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow container mx-auto px-3 py-4 max-w-6xl">
+
+        <!-- ==================== PAGE: HAKAMAN PEMBUKA ==================== -->
+        <section id="page-welcome" class="min-h-[85vh] flex items-center justify-center">
+            <div class="w-full max-w-xl glass-card rounded-2xl shadow-2xl overflow-hidden border-2 border-gold-500 p-6 md:p-8 text-center relative pattern-bg text-white">
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-500 via-gold-400 to-emerald-500"></div>
+                
+                <div class="w-20 h-20 bg-gold-400 text-emerald-900 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl shadow-lg border-4 border-emerald-800">
+                    <i class="fas fa-book-quran"></i>
+                </div>
+                
+                <span class="inline-block px-3 py-1 bg-emerald-700/80 text-gold-300 rounded-full text-xs font-semibold mb-2 uppercase tracking-wide border border-gold-500/30">
+                    Media Pembelajaran Interaktif (MPI)
+                </span>
+                
+                <h1 class="text-xl md:text-3xl font-bold text-white mb-2 leading-tight">
+                    MARI BELAJAR FIKIH
+                </h1>
+                <p class="text-xs md:text-sm text-emerald-100 mb-6 font-medium">
+                    Shalat Gerhana (Kusuf/Khusuf), Shalat Istisqa, dan Shalat Jenazah
+                </p>
+
+                <!-- Identitas Form -->
+                <div class="bg-emerald-900/90 backdrop-blur p-4 rounded-xl border border-emerald-600 text-left mb-6 shadow-inner">
+                    <label class="block text-xs font-medium text-emerald-200 mb-1">Nama Lengkap Peserta Didik:</label>
+                    <input type="text" id="input-student-name" placeholder="Masukkan nama kamu di sini..." class="w-full px-3 py-2 bg-slate-50 text-slate-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-400 text-sm font-medium mb-3">
+                    
+                    <label class="block text-xs font-medium text-emerald-200 mb-1">Kelas / Sekolah:</label>
+                    <input type="text" id="input-student-class" placeholder="Contoh: VIII-A / SMP Negeri 1" class="w-full px-3 py-2 bg-slate-50 text-slate-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-400 text-sm">
+                </div>
+
+                <button onclick="startApp()" class="w-full py-3 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-emerald-950 font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition duration-200 text-base flex items-center justify-center gap-2">
+                    <i class="fas fa-play"></i> MULAI BELAJAR
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== PAGE: MENU UTAMA ==================== -->
+        <section id="page-menu" class="hidden py-4">
+            <div class="bg-gradient-to-r from-emerald-800 to-emerald-900 text-white rounded-2xl p-6 mb-6 shadow-lg border border-gold-500/30 relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-xl md:text-2xl font-bold text-gold-400 mb-1">Selamat Datang, <span id="welcome-name">Siswa</span>!</h2>
+                    <p class="text-xs md:text-sm text-emerald-100">Pilih menu di bawah ini untuk memulai petualangan belajarmu hari ini.</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Menu Card 1 -->
+                <div onclick="navigateTo('petunjuk')" class="bg-white rounded-xl p-4 shadow-md hover:shadow-xl border border-slate-200 transition cursor-pointer transform hover:-translate-y-1 text-center group">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-blue-600 group-hover:text-white transition">
+                        <i class="fas fa-info-circle text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800 mb-1">Petunjuk & Tujuan</h3>
+                    <p class="text-[11px] text-slate-500">Panduan penggunaan & Capaian Pembelajaran</p>
+                </div>
+
+                <!-- Menu Card 2 -->
+                <div onclick="navigateTo('materi-1')" class="bg-white rounded-xl p-4 shadow-md hover:shadow-xl border border-slate-200 transition cursor-pointer transform hover:-translate-y-1 text-center group">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-600 group-hover:text-white transition">
+                        <i class="fas fa-moon text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800 mb-1">Shalat Gerhana</h3>
+                    <p class="text-[11px] text-slate-500">Fikih Kusuf & Khusuf</p>
+                </div>
+
+                <!-- Menu Card 3 -->
+                <div onclick="navigateTo('materi-2')" class="bg-white rounded-xl p-4 shadow-md hover:shadow-xl border border-slate-200 transition cursor-pointer transform hover:-translate-y-1 text-center group">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-amber-600 group-hover:text-white transition">
+                        <i class="fas fa-cloud-sun-rain text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800 mb-1">Shalat Istisqa</h3>
+                    <p class="text-[11px] text-slate-500">Shalat Meminta Hujan</p>
+                </div>
+
+                <!-- Menu Card 4 -->
+                <div onclick="navigateTo('materi-3')" class="bg-white rounded-xl p-4 shadow-md hover:shadow-xl border border-slate-200 transition cursor-pointer transform hover:-translate-y-1 text-center group">
+                    <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-purple-600 group-hover:text-white transition">
+                        <i class="fas fa-hands-praying text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800 mb-1">Shalat Jenazah</h3>
+                    <p class="text-[11px] text-slate-500">Ketentuan & Tata Cara</p>
+                </div>
+
+                <!-- Menu Card 5 -->
+                <div onclick="navigateTo('simulasi')" class="bg-white rounded-xl p-4 shadow-md hover:shadow-xl border border-slate-200 transition cursor-pointer transform hover:-translate-y-1 text-center group">
+                    <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-teal-600 group-hover:text-white transition">
+                        <i class="fas fa-play-circle text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800 mb-1">Simulasi Interaktif</h3>
+                    <p class="text-[11px] text-slate-500">Praktikkan gerakan & urutan shalat</p>
+                </div>
+
+                <!-- Menu Card 6 -->
+                <div onclick="navigateTo('kuis')" class="bg-white rounded-xl p-4 shadow-md hover:shadow-xl border border-slate-200 transition cursor-pointer transform hover:-translate-y-1 text-center group">
+                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-orange-600 group-hover:text-white transition">
+                        <i class="fas fa-question-circle text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800 mb-1">Kuis Latihan</h3>
+                    <p class="text-[11px] text-slate-500">15 Soal Latihan & Pembahasan</p>
+                </div>
+
+                <!-- Menu Card 7 -->
+                <div onclick="navigateTo('evaluasi')" class="bg-white rounded-xl p-4 shadow-md hover:shadow-xl border border-slate-200 transition cursor-pointer transform hover:-translate-y-1 text-center group">
+                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-red-600 group-hover:text-white transition">
+                        <i class="fas fa-award text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800 mb-1">Evaluasi Akhir</h3>
+                    <p class="text-[11px] text-slate-500">Tes Kemampuan & Nilai Akhir</p>
+                </div>
+
+                <!-- Menu Card 8 -->
+                <div onclick="navigateTo('profil')" class="bg-white rounded-xl p-4 shadow-md hover:shadow-xl border border-slate-200 transition cursor-pointer transform hover:-translate-y-1 text-center group">
+                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-indigo-600 group-hover:text-white transition">
+                        <i class="fas fa-user-tie text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800 mb-1">Profil Pengembang</h3>
+                    <p class="text-[11px] text-slate-500">Informasi Pengembang Application</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PAGE: PETUNJUK & TUJUAN ==================== -->
+        <section id="page-petunjuk" class="hidden py-4">
+            <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-200">
+                <div class="flex items-center justify-between border-b pb-4 mb-4">
+                    <h2 class="text-xl font-bold text-emerald-800 flex items-center gap-2">
+                        <i class="fas fa-compass"></i> Petunjuk & Tujuan Pembelajaran
+                    </h2>
+                    <button onclick="navigateTo('menu')" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-1 rounded-lg">Kembali</button>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Petunjuk Penggunaan -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-emerald-700 text-base mb-3 flex items-center gap-2">
+                            <i class="fas fa-list-check"></i> Petunjuk Penggunaan MPI
+                        </h3>
+                        <ul class="text-xs space-y-2 text-slate-700">
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle text-emerald-600 mt-0.5"></i> Pelajari materi secara berurutan mulai dari Shalat Gerhana, Istisqa, hingga Jenazah.</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle text-emerald-600 mt-0.5"></i> Gunakan tab navigasi di dalam materi untuk berpindah sub-topik.</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle text-emerald-600 mt-0.5"></i> Coba fitur <b>Simulasi Interaktif</b> untuk menguji pemahaman langkah-langkah shalat.</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle text-emerald-600 mt-0.5"></i> Kerjakan <b>Kuis Latihan</b> untuk mendapat feedback pembahasan langsung.</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle text-emerald-600 mt-0.5"></i> Akhiri pembelajaran dengan mengisi <b>Evaluasi Akhir</b> untuk memperoleh skor nilai.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Tujuan Pembelajaran -->
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+                        <h3 class="font-bold text-emerald-800 text-base mb-3 flex items-center gap-2">
+                            <i class="fas fa-bullseye"></i> Tujuan Pembelajaran
+                        </h3>
+                        <ul class="text-xs space-y-2 text-slate-700">
+                            <li class="flex items-start gap-2"><span class="bg-emerald-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span> Menjelaskan pengertian & hukum shalat gerhana, istisqa, dan jenazah.</li>
+                            <li class="flex items-start gap-2"><span class="bg-emerald-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span> Mengidentifikasi dalil naqli Al-Qur'an dan Hadis yang relevan.</li>
+                            <li class="flex items-start gap-2"><span class="bg-emerald-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span> Menjelaskan syarat, rukun, dan tata cara pelaksanaan masing-masing shalat.</li>
+                            <li class="flex items-start gap-2"><span class="bg-emerald-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">4</span> Mempraktikkan urutan gerakan dan bacaan shalat dengan benar.</li>
+                            <li class="flex items-start gap-2"><span class="bg-emerald-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">5</span> Menunjukkan sikap religius, peduli sosial, dan empati sesama manusia.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== MATERI 1: SHALAT GERHANA ==================== -->
+        <section id="page-materi-1" class="hidden py-4">
+            <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-200">
+                <!-- Header Materi -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-4 mb-4 gap-2">
+                    <div>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded font-semibold">Materi 1</span>
+                        <h2 class="text-xl font-bold text-slate-800 mt-1">Shalat Gerhana (Kusuf & Khusuf)</h2>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="navigateTo('menu')" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-1.5 rounded-lg">Menu</button>
+                        <button onclick="navigateTo('materi-2')" class="text-xs bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-lg">Materi Berikutnya <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                <!-- Inner Navigation Tabs -->
+                <div class="flex border-b border-slate-200 mb-6 overflow-x-auto text-xs md:text-sm font-medium">
+                    <button onclick="switchTab('m1', 'pengertian')" id="m1-btn-pengertian" class="tab-btn active px-4 py-2 whitespace-nowrap">Pengertian & Hukum</button>
+                    <button onclick="switchTab('m1', 'dalil')" id="m1-btn-dalil" class="tab-btn px-4 py-2 whitespace-nowrap">Dalil Naqli</button>
+                    <button onclick="switchTab('m1', 'tatacara')" id="m1-btn-tatacara" class="tab-btn px-4 py-2 whitespace-nowrap">Tata Cara & Bacaan</button>
+                    <button onclick="switchTab('m1', 'hikmah')" id="m1-btn-hikmah" class="tab-btn px-4 py-2 whitespace-nowrap">Hikmah</button>
+                </div>
+
+                <!-- Tab Content 1: Pengertian -->
+                <div id="m1-content-pengertian" class="tab-content space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+                            <h3 class="font-bold text-emerald-900 text-base mb-2 flex items-center gap-2">
+                                <i class="fas fa-sun text-amber-500"></i> Gerhana Matahari (Kusuf / ﻛُﺴُﻮﻑ)
+                            </h3>
+                            <p class="text-xs text-slate-700 leading-relaxed">
+                                Shalat Kusuf adalah shalat sunnah yang dilaksanakan ketika terjadi peristiwa <b>gerhana matahari</b>. Posisinya terjadi saat bulan berada di antara matahari dan bumi sehingga menutupi sebagian atau seluruh cahaya matahari.
+                            </p>
+                        </div>
+                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+                            <h3 class="font-bold text-indigo-900 text-base mb-2 flex items-center gap-2">
+                                <i class="fas fa-moon text-indigo-500"></i> Gerhana Bulan (Khusuf / ﺧُﺴُﻮﻑ)
+                            </h3>
+                            <p class="text-xs text-slate-700 leading-relaxed">
+                                Shalat Khusuf adalah shalat sunnah yang dilaksanakan ketika terjadi peristiwa <b>gerhana bulan</b>. Terjadi saat posisi bumi berada di antara matahari dan bulan, sehingga bayangan bumi menutupi bulan.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-slate-800 text-sm mb-2">Hukum Pelaksanaan:</h3>
+                        <p class="text-xs text-slate-700">
+                            Hukum melaksanakan shalat gerhana adalah <b>Sunnah Muakkad</b> (sangat dianjurkan) dan disunnahkan untuk dilaksanakan secara **berjamaah** di masjid/lapangan, disertai dengan dua khutbah setelah shalat.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tab Content 2: Dalil -->
+                <div id="m1-content-dalil" class="tab-content hidden space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-emerald-800 text-sm mb-2">Hadis Riwayat Bukhari dan Muslim</h3>
+                        <div class="bg-white p-4 rounded-lg border my-2 text-right">
+                            <p class="arabic-text text-lg text-slate-800 leading-loose">
+                                إِنَّ الشَّمْسَ وَالْقَمَرَ آيَتَانِ مِنْ آيَاتِ اللَّهِ ، لاَ يَخْسِفَانِ لِمَوْتِ أَحَدٍ وَلاَ لِحَيَاتِهِ ، فَإِذَا رَأَيْتُمُوهُمَا فَادْعُوا اللَّهَ وَكَبِّرُوا وَصَلُّوا وَتَصَدَّقُوا
+                            </p>
+                        </div>
+                        <p class="text-xs text-slate-600 italic mb-2">
+                            <b>Transliterasi:</b> Innasy-syamsa wal qamara aayataan min aayaatillah, laa yakhsifaani limawti ahadin walaa lihayaatih, fa-idzaa ra-aytumuuhumaa fad'ullaaha wa kabbiruu wa shalluu wa tashaddaquu.
+                        </p>
+                        <p class="text-xs text-slate-800 font-medium">
+                            <b>Artinya:</b> "Sesungguhnya matahari dan bulan adalah dua tanda di antara tanda-tanda kekuasaan Allah. Kejadiaannya bukan karena kematian atau kelahiran seseorang. Jika kalian melihatnya, maka berdoalah kepada Allah, bertakbirlah, laksanakan shalat, dan bersedekahlah." (HR. Bukhari no. 1044 & Muslim no. 901)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tab Content 3: Tata Cara -->
+                <div id="m1-content-tatacara" class="tab-content hidden space-y-4">
+                    <p class="text-xs text-slate-600">Shalat gerhana dilakukan sebanyak <b>2 rakaat</b>, di mana setiap rakaat memiliki <b>2 kali ruku'</b> dan <b>2 kali berdiri (membaca Al-Fatihah & surat)</b>.</p>
+
+                    <!-- Niat Shalat Gerhana -->
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+                        <h4 class="font-bold text-emerald-900 text-xs mb-2">Niat Shalat Gerhana Matahari (Kusuf):</h4>
+                        <p class="arabic-text text-right text-base text-slate-800 font-semibold mb-1">أُصَلِّي سُنَّةَ لِكُسُوْفِ الشَّمْسِ رَكْعَتَيْنِ مَأْمُوْمًا/إِمَامًا لِلّٰهِ تَعَالَى</p>
+                        <p class="text-xs text-slate-600"><i>Ushallii sunnatal likusuufisy-syamsi rak'ataini ma'muuman/imaaman lillaahi ta'aalaa.</i></p>
+                        <p class="text-xs text-slate-800 mt-1">"Aku niat shalat sunnah gerhana matahari dua rakaat sebagai makmum/imam karena Allah Ta'ala."</p>
+                    </div>
+
+                    <!-- Steps -->
+                    <div class="space-y-2 text-xs">
+                        <div class="p-3 bg-white border rounded-lg flex gap-3 items-center">
+                            <span class="w-6 h-6 bg-emerald-700 text-white rounded-full flex items-center justify-center font-bold text-xs shrink-0">1</span>
+                            <div><b>Takbiratul ihram & Niat</b>, lalu membaca Doa Iftitah, Surah Al-Fatihah, dan Surah Al-Qur'an (dianjurkan surah panjang).</div>
+                        </div>
+                        <div class="p-3 bg-white border rounded-lg flex gap-3 items-center">
+                            <span class="w-6 h-6 bg-emerald-700 text-white rounded-full flex items-center justify-center font-bold text-xs shrink-0">2</span>
+                            <div><b>Ruku' Pertama</b> dengan membaca tasbih yang lama.</div>
+                        </div>
+                        <div class="p-3 bg-white border rounded-lg flex gap-3 items-center">
+                            <span class="w-6 h-6 bg-emerald-700 text-white rounded-full flex items-center justify-center font-bold text-xs shrink-0">3</span>
+                            <div><b>Bangkit berdiri (I'tidal)</b>, namun TIDAK langsung sujud. Membaca Al-Fatihah dan Surah lagi.</div>
+                        </div>
+                        <div class="p-3 bg-white border rounded-lg flex gap-3 items-center">
+                            <span class="w-6 h-6 bg-emerald-700 text-white rounded-full flex items-center justify-center font-bold text-xs shrink-0">4</span>
+                            <div><b>Ruku' Kedua</b> yang durasinya agak lebih pendek dari ruku' pertama.</div>
+                        </div>
+                        <div class="p-3 bg-white border rounded-lg flex gap-3 items-center">
+                            <span class="w-6 h-6 bg-emerald-700 text-white rounded-full flex items-center justify-center font-bold text-xs shrink-0">5</span>
+                            <div><b>I'tidal kedua</b>, kemudian melakukan <b>Sujud dua kali</b> seperti shalat biasa.</div>
+                        </div>
+                        <div class="p-3 bg-white border rounded-lg flex gap-3 items-center">
+                            <span class="w-6 h-6 bg-emerald-700 text-white rounded-full flex items-center justify-center font-bold text-xs shrink-0">6</span>
+                            <div>Ulangi rakaat kedua seperti rakaat pertama (2 kali ruku'), diakhiri dengan **Tasyahud Akhir & Salam**.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 4: Hikmah -->
+                <div id="m1-content-hikmah" class="tab-content hidden space-y-3 text-xs">
+                    <div class="p-4 bg-amber-50 rounded-xl border border-amber-200">
+                        <h3 class="font-bold text-amber-900 text-sm mb-2">Hikmah Pelaksanaan Shalat Gerhana:</h3>
+                        <ul class="list-disc pl-4 space-y-1.5 text-slate-700">
+                            <li>Meningkatkan rasa keimanan dan ketakwaan atas keagungan alam semesta ciptaan Allah SWT.</li>
+                            <li>Mengingatkan manusia akan datangnya hari kiamat dan kehancuran alam semesta.</li>
+                            <li>Melatih diri untuk memperbanyak doa, istighfar, dan sedekah saat terjadi peristiwa luar biasa.</li>
+                            <li>Menghilangkan kepercayaan takhayul/mitos kuno tentang fenomena gerhana.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== MATERI 2: SHALAT ISTISQA ==================== -->
+        <section id="page-materi-2" class="hidden py-4">
+            <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-4 mb-4 gap-2">
+                    <div>
+                        <span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-0.5 rounded font-semibold">Materi 2</span>
+                        <h2 class="text-xl font-bold text-slate-800 mt-1">Shalat Istisqa (Meminta Hujan)</h2>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="navigateTo('materi-1')" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-1.5 rounded-lg"><i class="fas fa-arrow-left mr-1"></i> Materi 1</button>
+                        <button onclick="navigateTo('materi-3')" class="text-xs bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-lg">Materi Berikutnya <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                <div class="flex border-b border-slate-200 mb-6 overflow-x-auto text-xs md:text-sm font-medium">
+                    <button onclick="switchTab('m2', 'pengertian')" id="m2-btn-pengertian" class="tab-btn active px-4 py-2 whitespace-nowrap">Pengertian & Sebab</button>
+                    <button onclick="switchTab('m2', 'dalil')" id="m2-btn-dalil" class="tab-btn px-4 py-2 whitespace-nowrap">Dalil Naqli</button>
+                    <button onclick="switchTab('m2', 'tatacara')" id="m2-btn-tatacara" class="tab-btn px-4 py-2 whitespace-nowrap">Tata Cara & Doa</button>
+                    <button onclick="switchTab('m2', 'hikmah')" id="m2-btn-hikmah" class="tab-btn px-4 py-2 whitespace-nowrap">Hikmah</button>
+                </div>
+
+                <!-- Tab Content: Pengertian -->
+                <div id="m2-content-pengertian" class="tab-content space-y-4">
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                        <h3 class="font-bold text-amber-900 text-base mb-2">Pengertian Shalat Istisqa</h3>
+                        <p class="text-xs text-slate-700 leading-relaxed">
+                            Shalat Istisqa (ﺍﻹﺳﺘﺴﻘﺎﺀ) secara bahasa artinya <b>meminta siraman air atau hujan</b>. Menurut istilah fikih, Shalat Istisqa adalah shalat sunnah dua rakaat yang dikerjakan untuk memohon kepada Allah SWT agar menurunkan hujan pada saat terjadi kemarau panjang atau kekeringan air.
+                        </p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 mb-2">Hukum Pelaksanaan:</h4>
+                            <p class="text-slate-700"><b>Sunnah Muakkad</b> bagi masyarakat yang mengalami musibah kekeringan, kekuarangan air bersih, atau musim kemarau yang berkepanjangan.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 mb-2">Amalan Sebelum Shalat (Anjuran Imam):</h4>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                                <li>Berpuasa selama 3-4 hari berturut-turut.</li>
+                                <li>Bertaubat dan memperbanyak istighfar.</li>
+                                <li>Memperbanyak sedekah & berbuat baik.</li>
+                                <li>Mengehentikan segala perbuatan zalim.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Dalil -->
+                <div id="m2-content-dalil" class="tab-content hidden space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-emerald-800 text-sm mb-2">Hadis Riwayat Abdullah bin Zaid</h3>
+                        <div class="bg-white p-4 rounded-lg border my-2 text-right">
+                            <p class="arabic-text text-lg text-slate-800 leading-loose">
+                                خَرَجَ النَّبِيُّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَسْتَسْقِي فَتَوَجَّهَ إِلَى الْقِبْلَةِ يَدْعُو وَحَوَّلَ رِدَاءَهُ ثُمَّ صَلَّى رَكْعَتَيْنِ جَهَرَ فِيهِمَا بِالْقِرَاءَةِ
+                            </p>
+                        </div>
+                        <p class="text-xs text-slate-600 italic mb-2">
+                            <b>Transliterasi:</b> Kharajan-nabiyyu shallallaahu 'alaihi wa sallama yastasqii fatawajjaha ilal qiblati yad'uu wa hawwala ridaa-ahu tsumma shallaa rak'ataini jahara fiihimaa bil qiraa-ah.
+                        </p>
+                        <p class="text-xs text-slate-800 font-medium">
+                            <b>Artinya:</b> "Nabi SAW keluar untuk memohon hujan (Istisqa), lalu beliau menghadap kiblat seraya berdoa, membalikkan selendang/pakaiannya, kemudian melaksanakan shalat dua rakaat dengan membedakan/mengeraskan bacaannya." (HR. Bukhari & Muslim)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Tata Cara -->
+                <div id="m2-content-tatacara" class="tab-content hidden space-y-4">
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 text-xs">
+                        <h4 class="font-bold text-amber-900 mb-1">Niat Shalat Istisqa:</h4>
+                        <p class="arabic-text text-right text-base text-slate-800 font-semibold mb-1">أُصَلِّي سُنَّةَ الاِسْتِسْقَاءِ رَكْعَتَيْنِ مَأْمُوْمًا/إِمَامًا لِلّٰهِ تَعَالَى</p>
+                        <p class="text-slate-600"><i>Ushallii sunnatal-istisqaa-i rak'ataini ma'muuman/imaaman lillaahi ta'aalaa.</i></p>
+                    </div>
+
+                    <div class="space-y-2 text-xs">
+                        <p class="font-bold text-slate-800">Tata Cara Ringkas Shalat Istisqa (2 Rakaat):</p>
+                        <ol class="list-decimal pl-5 space-y-1.5 text-slate-700">
+                            <li>Shalat dilaksanakan di tanah lapang secara berjamaah.</li>
+                            <li><b>Rakaat Pertama:</b> Takbiratul ihram, dilanjutkan <b>takbir 7 kali</b> (di antara takbir membaca tasbih). Membaca Surah Al-Fatihah dan Surah pendek, ruku', sujud seperti shalat biasa.</li>
+                            <li><b>Rakaat Kedua:</b> Berdiri lalu <b>takbir 5 kali</b>, membaca Al-Fatihah dan surah, ruku', sujud, tasyahud akhir, dan salam.</li>
+                            <li><b>Khutbah Istisqa:</b> Khatib menyampaikan 2 kali khutbah. Pada khutbah pertama membaca istighfar 9x dan khutbah kedua 7x.</li>
+                            <li>Khatib dan jamaah membalikkan selendang/sorban dan mengangkat tangan tinggi-tinggi saat berdoa meminta hujan.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Doa Minta Hujan -->
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+                        <h4 class="font-bold text-emerald-900 text-xs mb-2"><i class="fas fa-cloud-showers-heavy mr-1"></i> Doa Meminta Hujan (Lafal Istisqa):</h4>
+                        <p class="arabic-text text-right text-base text-slate-800 font-semibold leading-loose mb-2">
+                            اللَّهُمَّ اسْقِنَا غَيْثًا مُغِيثًا مَرِيئًا مَرِيعًا نَافِعًا غَيْرَ ضَارٍّ عَاجِلاً غَيْرَ آجِلٍ
+                        </p>
+                        <p class="text-xs text-slate-600 mb-1"><i>Allaahummasqinaa ghaitsan mughiitsan marii'an marii'an naafi'an ghaira dhaarrin 'aajilan ghaira aajil.</i></p>
+                        <p class="text-xs text-slate-800">"Ya Allah, turunkanlah kepada kami hujan yang menolong, lezat, menyuburkan, bermanfaat, tidak membahayakan, secepatnya dan tidak ditunda-tunda."</p>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Hikmah -->
+                <div id="m2-content-hikmah" class="tab-content hidden space-y-3 text-xs">
+                    <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                        <h3 class="font-bold text-emerald-900 text-sm mb-2">Hikmah Shalat Istisqa:</h3>
+                        <ul class="list-disc pl-4 space-y-1.5 text-slate-700">
+                            <li>Menyadarkan manusia bahwa air dan rizki sepenuhnya adalah karunia Allah SWT.</li>
+                            <li>Mendidik umat Islam untuk senantiasa bertaubat dan menjauhi perbuatan maksiat.</li>
+                            <li>Menumbuhkan solidaritas sosial melalui doa bersama dan kepedulian antar sesame korban kekeringan.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== MATERI 3: SHALAT JENAZAH ==================== -->
+        <section id="page-materi-3" class="hidden py-4">
+            <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-4 mb-4 gap-2">
+                    <div>
+                        <span class="bg-purple-100 text-purple-800 text-xs px-2.5 py-0.5 rounded font-semibold">Materi 3</span>
+                        <h2 class="text-xl font-bold text-slate-800 mt-1">Shalat Jenazah</h2>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="navigateTo('materi-2')" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-1.5 rounded-lg"><i class="fas fa-arrow-left mr-1"></i> Materi 2</button>
+                        <button onclick="navigateTo('simulasi')" class="text-xs bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-lg">Ke Simulasi <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                <div class="flex border-b border-slate-200 mb-6 overflow-x-auto text-xs md:text-sm font-medium">
+                    <button onclick="switchTab('m3', 'pengertian')" id="m3-btn-pengertian" class="tab-btn active px-4 py-2 whitespace-nowrap">Pengertian & Hukum</button>
+                    <button onclick="switchTab('m3', 'dalil')" id="m3-btn-dalil" class="tab-btn px-4 py-2 whitespace-nowrap">Dalil Naqli</button>
+                    <button onclick="switchTab('m3', 'tatacara')" id="m3-btn-tatacara" class="tab-btn px-4 py-2 whitespace-nowrap">4 Takbir & Bacaan</button>
+                    <button onclick="switchTab('m3', 'hikmah')" id="m3-btn-hikmah" class="tab-btn px-4 py-2 whitespace-nowrap">Perbedaan & Hikmah</button>
+                </div>
+
+                <!-- Tab Content: Pengertian -->
+                <div id="m3-content-pengertian" class="tab-content space-y-4">
+                    <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
+                        <h3 class="font-bold text-purple-900 text-base mb-2">Pengertian Shalat Jenazah</h3>
+                        <p class="text-xs text-slate-700 leading-relaxed">
+                            Shalat Jenazah adalah shalat yang dikerjakan untuk mendoakan seorang muslim/muslimah yang telah meninggal dunia. Shalat ini dilakukan dengan <b>4 kali takbir, tanpa ruku', tanpa sujud, dan dilakukan secara berdiri tegak</b>.
+                        </p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 mb-1">Hukum Pelaksanaan:</h4>
+                            <p class="text-slate-700"><b>Fardhu Kifayah</b>. Artinya, jika sudah ada sebagian masyarakat muslim yang melaksanakannya, maka gugurlah kewajiban bagi muslim yang lain. Namun jika tidak ada satu pun yang menyalatinya, maka seluruhnya berdosa.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 mb-1">Syarat Sah Shalat Jenazah:</h4>
+                            <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                                <li>Suci dari hadas kecil & besar, menutup aurat.</li>
+                                <li>Jenazah sudah dimandikan dan dikafani.</li>
+                                <li>Letak jenazah berada di depan orang yang menyalati (kecuali Shalat Gaib).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Dalil -->
+                <div id="m3-content-dalil" class="tab-content hidden space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-purple-800 text-sm mb-2">Hadis Riwayat Abu Hurairah RA</h3>
+                        <div class="bg-white p-4 rounded-lg border my-2 text-right">
+                            <p class="arabic-text text-lg text-slate-800 leading-loose">
+                                مَنْ شَهِدَ الْجَنَازَةَ حَتَّى يُصَلَّى عَلَيْهَا فَلَهُ قِيرَاطٌ ، وَمَنْ شَهِدَ حَتَّى تُدْفَنَ كَانَ لَهُ قِيرَاطَانِ . قِيلَ وَمَا الْقِيرَاطَانِ قَالَ مِثْلُ الْجَبَلَيْنِ الْعَظِيمَيْنِ
+                            </p>
+                        </div>
+                        <p class="text-xs text-slate-800 font-medium">
+                            <b>Artinya:</b> "Barangsiapa menghadiri jenazah hingga dishalatkan, maka ia mendapat pahala satu qirat. Dan barangsiapa menghadiri hingga dimakamkan, maka ia mendapat dua qirat." Ditanyakan: "Apakah dua qirat itu?" Beliau menjawab: "Seperti dua gunung yang besar." (HR. Bukhari no. 1325 & Muslim no. 945)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tab Content: 4 Takbir -->
+                <div id="m3-content-tatacara" class="tab-content hidden space-y-4">
+                    <div class="space-y-3 text-xs">
+                        <!-- Takbir 1 -->
+                        <div class="p-3 bg-slate-50 border rounded-lg">
+                            <h4 class="font-bold text-emerald-800 mb-1"><i class="fas fa-1"></i> TAKBIR PERTAMA (Niat & Al-Fatihah)</h4>
+                            <p class="text-slate-600 mb-2">Membaca Niat bersamaan dengan Takbiratul Ihram, kemudian membaca Surah Al-Fatihah.</p>
+                            <div class="bg-white p-2 rounded border text-right">
+                                <p class="arabic-text text-sm">أُصَلِّي عَلَى هٰذَا المَيِّتِ (هٰذِهِ المَيْتَةِ) أَرْبَعَ تَكْبِيْرَاتٍ فَرْضَ كِفَايَةٍ مَأْمُوْمًا لِلّٰهِ تَعَالَى</p>
+                            </div>
+                        </div>
+
+                        <!-- Takbir 2 -->
+                        <div class="p-3 bg-slate-50 border rounded-lg">
+                            <h4 class="font-bold text-emerald-800 mb-1"><i class="fas fa-2"></i> TAKBIR KEDUA (Shalawat Nabi)</h4>
+                            <p class="text-slate-600 mb-2">Setelah takbir kedua, membaca Shalawat kepada Nabi Muhammad SAW:</p>
+                            <div class="bg-white p-2 rounded border text-right">
+                                <p class="arabic-text text-sm">اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ وَعَلَى آلِ سَيِّدِنَا مُحَمَّدٍ</p>
+                            </div>
+                        </div>
+
+                        <!-- Takbir 3 -->
+                        <div class="p-3 bg-slate-50 border rounded-lg">
+                            <h4 class="font-bold text-emerald-800 mb-1"><i class="fas fa-3"></i> TAKBIR KETIGA (Doa untuk Jenazah)</h4>
+                            <p class="text-slate-600 mb-2">Mendoakan jenazah (untuk jenazah laki-laki berpikiran <i>-hu</i>, perempuan <i>-ha</i>):</p>
+                            <div class="bg-white p-2 rounded border text-right">
+                                <p class="arabic-text text-sm">اللَّهُمَّ اغْفِرْ لَهُ (لَهَا) وَارْحَمْهُ (هَا) وَعَافِهِ (هَا) وَاعْفُ عَنْهُ (عَنْهَا)</p>
+                            </div>
+                            <p class="text-[11px] text-slate-600 italic mt-1">"Ya Allah, ampunilah dia, rahmatilah dia, sejahterakanlah dia, dan maafkanlah kesalahannya."</p>
+                        </div>
+
+                        <!-- Takbir 4 -->
+                        <div class="p-3 bg-slate-50 border rounded-lg">
+                            <h4 class="font-bold text-emerald-800 mb-1"><i class="fas fa-4"></i> TAKBIR KEEMPAT (Doa Keberkahan & Salam)</h4>
+                            <p class="text-slate-600 mb-2">Membaca doa penutup lalu mengucapkan Salam ke kanan dan ke kiri:</p>
+                            <div class="bg-white p-2 rounded border text-right">
+                                <p class="arabic-text text-sm">اللَّهُمَّ لاَ تَحْرِمْنَا أَجْرَهُ (هَا) وَلاَ تَفْتِنَّا بَعْدَهُ (هَا) وَاغْفِرْ لَنَا وَلَهُ (لَهَا)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Hikmah -->
+                <div id="m3-content-hikmah" class="tab-content hidden space-y-3 text-xs">
+                    <div class="p-4 bg-purple-50 rounded-xl border border-purple-200">
+                        <h3 class="font-bold text-purple-900 text-sm mb-2">Perbedaan Posisi Imam & Hikmah:</h3>
+                        <div class="grid md:grid-cols-2 gap-3 mb-3">
+                            <div class="bg-white p-2.5 rounded border">
+                                <b>Jenazah Laki-laki:</b><br>Imam berdiri sejajar di arah <b>kepala</b> jenazah.
+                            </div>
+                            <div class="bg-white p-2.5 rounded border">
+                                <b>Jenazah Perempuan:</b><br>Imam berdiri sejajar di arah <b>pinggang/lambung</b> jenazah.
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-purple-900 mb-1">Hikmah Shalat Jenazah:</h4>
+                        <ul class="list-disc pl-4 space-y-1 text-slate-700">
+                            <li>Mengingatkan kita akan kepastian datangnya kematian (Ziaratul Maut).</li>
+                            <li>Bentuk penghormatan dan hak terakhir seorang muslim terhadap saudaranya.</li>
+                            <li>Meringankan beban keluarga yang ditinggalkan melalui penghiburan dan doa ikhlas.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SIMULASI INTERAKTIF ==================== -->
+        <section id="page-simulasi" class="hidden py-4">
+            <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-200">
+                <div class="flex items-center justify-between border-b pb-4 mb-4">
+                    <h2 class="text-xl font-bold text-teal-800 flex items-center gap-2">
+                        <i class="fas fa-play-circle"></i> Simulasi Interaktif Tata Cara Shalat
+                    </h2>
+                    <button onclick="navigateTo('menu')" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-1 rounded-lg">Menu</button>
+                </div>
+
+                <div class="flex gap-2 mb-4">
+                    <button onclick="loadSimulation('gerhana')" id="sim-btn-gerhana" class="sim-tab px-3 py-1.5 bg-emerald-700 text-white rounded-lg text-xs font-semibold">Shalat Gerhana</button>
+                    <button onclick="loadSimulation('jenazah')" id="sim-btn-jenazah" class="sim-tab px-3 py-1.5 bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Shalat Jenazah</button>
+                </div>
+
+                <!-- Simulation Canvas Area -->
+                <div class="bg-slate-900 rounded-2xl p-6 text-white min-h-[320px] flex flex-col justify-between relative overflow-hidden shadow-inner">
+                    <div class="flex justify-between items-center text-xs text-gold-400 font-semibold mb-2">
+                        <span id="sim-title">Langkah Simulasi</span>
+                        <span id="sim-step-indicator">Langkah 1 dari 6</span>
+                    </div>
+
+                    <!-- Visual Illustration Box -->
+                    <div class="my-auto py-6 text-center">
+                        <div id="sim-icon" class="text-6xl text-emerald-400 mb-3 animate-bounce">
+                            <i class="fas fa-hands-praying"></i>
+                        </div>
+                        <h3 id="sim-step-title" class="text-lg font-bold text-white mb-2">1. Niat & Takbiratul Ihram</h3>
+                        <p id="sim-step-desc" class="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
+                            Membaca niat shalat gerhana di dalam hati disertai mengangkat kedua tangan melakukan takbiratul ihram.
+                        </p>
+                        <div id="sim-arabic" class="mt-3 bg-slate-800/80 p-3 rounded-lg border border-slate-700 max-w-lg mx-auto text-gold-300 text-base arabic-text">
+                            أُصَلِّي سُنَّةَ لِكُسُوْفِ الشَّمْسِ ...
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="flex justify-between items-center pt-4 border-t border-slate-800">
+                        <button onclick="prevSimStep()" id="sim-prev-btn" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-medium disabled:opacity-40">
+                            <i class="fas fa-chevron-left mr-1"></i> Sebelumnya
+                        </button>
+                        <button onclick="nextSimStep()" id="sim-next-btn" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-medium">
+                            Selanjutnya <i class="fas fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== KUIS INTERAKTIF ==================== -->
+        <section id="page-kuis" class="hidden py-4">
+            <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-200">
+                <div class="flex items-center justify-between border-b pb-4 mb-4">
+                    <div>
+                        <span class="bg-orange-100 text-orange-800 text-xs px-2 py-0.5 rounded font-semibold">Latihan Mandiri</span>
+                        <h2 class="text-xl font-bold text-slate-800">Kuis Interaktif (15 Soal)</h2>
+                    </div>
+                    <span id="quiz-progress-text" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">Soal 1 / 15</span>
+                </div>
+
+                <!-- Quiz Container -->
+                <div id="quiz-box">
+                    <h3 id="quiz-question" class="text-sm md:text-base font-semibold text-slate-800 mb-4">
+                        1. Pertanyaan Kuis Akan Muncul Di Sini...
+                    </h3>
+
+                    <div id="quiz-options" class="space-y-2 mb-6">
+                        <!-- Options will be inserted dynamically -->
+                    </div>
+
+                    <!-- Direct Feedback Box -->
+                    <div id="quiz-feedback" class="hidden p-4 rounded-xl text-xs mb-4">
+                        <p id="quiz-feedback-title" class="font-bold text-sm mb-1"></p>
+                        <p id="quiz-feedback-desc" class="text-slate-700"></p>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button onclick="nextQuizQuestion()" id="quiz-next-btn" class="hidden px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition">
+                            Soal Berikutnya <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quiz Result Summary -->
+                <div id="quiz-result-box" class="hidden text-center py-8">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-3 text-3xl">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-1">Kuis Selesai!</h3>
+                    <p class="text-xs text-slate-600 mb-4">Kamu telah menyelesaikan seluruh soal latihan kuis.</p>
+                    
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 max-w-sm mx-auto mb-6">
+                        <div class="text-3xl font-extrabold text-emerald-700 mb-1" id="quiz-final-score">0 / 15</div>
+                        <p class="text-xs text-slate-500">Jawaban Benar</p>
+                    </div>
+
+                    <div class="flex justify-center gap-3">
+                        <button onclick="resetQuiz()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg text-xs font-bold">Ulangi Kuis</button>
+                        <button onclick="navigateTo('evaluasi')" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold">Lanjut Evaluasi Akhir</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== EVALUASI AKHIR ==================== -->
+        <section id="page-evaluasi" class="hidden py-4">
+            <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-200">
+                <div class="flex items-center justify-between border-b pb-4 mb-4">
+                    <div>
+                        <span class="bg-red-100 text-red-800 text-xs px-2.5 py-0.5 rounded font-semibold">Uji Pemahaman</span>
+                        <h2 class="text-xl font-bold text-slate-800">Evaluasi Akhir Pembelajaran</h2>
+                    </div>
+                    <span id="eval-progress-text" class="text-xs font-bold text-red-700 bg-red-50 px-3 py-1 rounded-full border border-red-200">Soal 1 / 20</span>
+                </div>
+
+                <!-- Evaluasi Test Box -->
+                <div id="eval-box">
+                    <h3 id="eval-question" class="text-sm md:text-base font-semibold text-slate-800 mb-4">
+                        Soal Evaluasi...
+                    </h3>
+
+                    <div id="eval-options" class="space-y-2 mb-6">
+                        <!-- Options -->
+                    </div>
+
+                    <div class="flex justify-between items-center border-t pt-4">
+                        <span class="text-xs text-slate-400 italic">Pilih jawaban terbaik lalu klik Selanjutnya</span>
+                        <button onclick="nextEvalQuestion()" id="eval-next-btn" class="px-5 py-2 bg-red-700 hover:bg-red-800 text-white rounded-lg text-xs font-bold transition">
+                            Selanjutnya <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Evaluasi Result Screen -->
+                <div id="eval-result-box" class="hidden text-center py-6">
+                    <div id="eval-icon-badge" class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-3 text-4xl shadow-lg">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold text-slate-800 mb-1" id="eval-category-title">Sangat Memuaskan!</h3>
+                    <p class="text-xs text-slate-600 mb-6">Berikut adalah laporan hasil evaluasi belajar kamu:</p>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-xl mx-auto mb-6 text-left">
+                        <div class="bg-slate-50 p-3 rounded-lg border text-center">
+                            <span class="text-[10px] text-slate-500 uppercase font-bold block">Nilai Akhir</span>
+                            <span id="eval-score-percent" class="text-2xl font-extrabold text-emerald-700">0%</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border text-center">
+                            <span class="text-[10px] text-slate-500 uppercase font-bold block">Benar</span>
+                            <span id="eval-correct-count" class="text-2xl font-extrabold text-emerald-600">0</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border text-center">
+                            <span class="text-[10px] text-slate-500 uppercase font-bold block">Salah</span>
+                            <span id="eval-wrong-count" class="text-2xl font-extrabold text-red-500">0</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border text-center">
+                            <span class="text-[10px] text-slate-500 uppercase font-bold block">Kategori</span>
+                            <span id="eval-category-tag" class="text-xs font-bold text-slate-700 block mt-2">Baik</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center gap-3">
+                        <button onclick="resetEval()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg text-xs font-bold">Mengulang Evaluasi</button>
+                        <button onclick="navigateTo('penutup')" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold">Halaman Penutup <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== HALAMAN PENUTUP ==================== -->
+        <section id="page-penutup" class="hidden py-4">
+            <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 border border-slate-200 text-center max-w-2xl mx-auto">
+                <div class="w-16 h-16 bg-gold-100 text-gold-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                    <i class="fas fa-heart text-amber-500"></i>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-emerald-900 mb-2">Alhamdulillah!</h2>
+                <p class="text-xs md:text-sm text-slate-600 mb-6 leading-relaxed">
+                    Kamu telah menyelesaikan seluruh rangkaian Media Pembelajaran Interaktif Fikih Shalat Gerhana, Shalat Istisqa, dan Shalat Jenazah.
+                </p>
+
+                <!-- Ringkasan Kesimpulan -->
+                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 text-left mb-6 text-xs space-y-2">
+                    <h3 class="font-bold text-emerald-900 text-sm mb-1"><i class="fas fa-bookmark mr-1"></i> Ringkasan Kesimpulan:</h3>
+                    <p><b>1. Shalat Gerhana:</b> Dikerjakan 2 rakaat dengan 2 kali ruku' di setiap rakaatnya saat terjadi fenomena gerhana matahari (Kusuf) atau bulan (Khusuf).</p>
+                    <p><b>2. Shalat Istisqa:</b> Shalat sunnah 2 rakaat memohon hujan saat kemarau panjang, diawali takbir 7x & 5x serta disertai khutbah dan pembalikan selendang.</p>
+                    <p><b>3. Shalat Jenazah:</b> Fardhu kifayah, 4 kali takbir tanpa ruku' dan sujud, berisi doa kebaikan untuk jenazah sesama muslim.</p>
+                </div>
+
+                <!-- Pesan Motivasi -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 italic text-xs text-slate-700 mb-6">
+                    "Ilmu fikih bukan hanya sekadar hafalan teori, tetapi panduan amalan untuk mendekatkan diri kepada Allah SWT serta memupuk empati dan kepedulian terhadap sesama manusia."
+                </div>
+
+                <button onclick="navigateTo('menu')" class="px-6 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white rounded-xl text-xs font-bold shadow-md transition">
+                    <i class="fas fa-home mr-1"></i> Kembali ke Menu Utama
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== PROFIL PENGEMBANG ==================== -->
+        <section id="page-profil" class="hidden py-4">
+            <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-200 max-w-xl mx-auto">
+                <div class="flex items-center justify-between border-b pb-4 mb-4">
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fas fa-user-tie text-indigo-600"></i> Profil Pengembang
+                    </h2>
+                    <button onclick="navigateTo('menu')" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-1 rounded-lg">Menu</button>
+                </div>
+
+                <div class="text-center py-4">
+                    <div class="w-24 h-24 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center mx-auto mb-3 text-4xl border-4 border-indigo-200 shadow">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800">Tim Pengembang PAI Digital</h3>
+                    <p class="text-xs text-slate-500 mb-4">Pengembang Media Pembelajaran Interaktif SMP</p>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left text-xs space-y-2">
+                        <div class="flex justify-between border-b pb-1.5">
+                            <span class="text-slate-500 font-medium">Mata Pelajaran:</span>
+                            <span class="font-semibold text-slate-800">Pendidikan Agama Islam (PAI)</span>
+                        </div>
+                        <div class="flex justify-between border-b pb-1.5">
+                            <span class="text-slate-500 font-medium">Sasaran:</span>
+                            <span class="font-semibold text-slate-800">Peserta Didik SMP (Kelas VIII/IX)</span>
+                        </div>
+                        <div class="flex justify-between border-b pb-1.5">
+                            <span class="text-slate-500 font-medium">Materi Fikih:</span>
+                            <span class="font-semibold text-slate-800">Shalat Gerhana, Istisqa, Jenazah</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500 font-medium">Versi Aplikasi:</span>
+                            <span class="font-semibold text-slate-800">v2.0 (Standalone Offline Ready)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-emerald-950 text-emerald-300 text-[11px] py-3 text-center border-t border-emerald-800">
+        <p>© 2026 Media Pembelajaran Interaktif PAI SMP - Mari Belajar Fikih</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // GLOBAL DATA & STATE
+        let studentData = {
+            name: '',
+            class: '',
+            progress: 0
+        };
+
+        const pages = ['welcome', 'menu', 'petunjuk', 'materi-1', 'materi-2', 'materi-3', 'simulasi', 'kuis', 'evaluasi', 'penutup', 'profil'];
+
+        // Quiz Questions Data (15 Questions)
+        const quizData = [
+            {
+                q: "1. Istilah shalat sunnah yang dikerjakan saat terjadi gerhana matahari adalah...",
+                options: ["Shalat Khusuf", "Shalat Kusuf", "Shalat Istisqa", "Shalat Istikharah"],
+                answer: 1,
+                desc: "Shalat Kusuf (dengan 'K') adalah shalat sunnah gerhana matahari, sedangkan Khusuf (dengan 'Kh') adalah gerhana bulan."
+            },
+            {
+                q: "2. Hukum melaksankan Shalat Gerhana (Kusuf/Khusuf) adalah...",
+                options: ["Fardhu 'Ain", "Fardhu Kifayah", "Sunnah Muakkad", "Mubah"],
+                answer: 2,
+                desc: "Hukum shalat gerhana adalah Sunnah Muakkad (sangat dianjurkan bagi laki-laki dan perempuan)."
+            },
+            {
+                q: "3. Perbedaan utama tata cara Shalat Gerhana dibanding shalat sunnah biasa adalah...",
+                options: ["Dilakukan tanpa sujud", "Memiliki dua kali ruku' dalam satu rakaat", "Dilakukan dengan 4 kali takbir saja", "Hanya dilakukan 1 rakaat"],
+                answer: 1,
+                desc: "Shalat gerhana dilakukan 2 rakaat, di mana setiap rakaat memiliki 2 kali berdiri (membaca Al-Fatihah) dan 2 kali ruku'."
+            },
+            {
+                q: "4. Shalat Istisqa dilaksanakan dengan tujuan untuk...",
+                options: ["Memohon petunjuk pilihan", "Memohon diturunkannya hujan", "Mendoakan orang meninggal", "Mengucap syukur panen"],
+                answer: 1,
+                desc: "Shalat Istisqa secara bahasa artinya meminta siraman air/hujan saat musim kemarau panjang."
+            },
+            {
+                q: "5. Jumlah takbir tambahan pada rakaat pertama Shalat Istisqa adalah sebanyak...",
+                options: ["3 kali", "5 kali", "7 kali", "9 kali"],
+                answer: 2,
+                desc: "Pada rakaat pertama Shalat Istisqa, setelah takbiratul ihram terdapat 7 kali takbir tambahan."
+            },
+            {
+                q: "6. Hukum melaksanakan Shalat Jenazah bagi umat Islam adalah...",
+                options: ["Fardhu 'Ain", "Fardhu Kifayah", "Sunnah Muakkad", "Sunnah Ghairu Muakkad"],
+                answer: 1,
+                desc: "Shalat Jenazah hukumnya Fardhu Kifayah; kewajiban gugur jika sudah ada sebagian muslim yang menyalatinya."
+            },
+            {
+                q: "7. Shalat Jenazah dilakukan dengan...",
+                options: ["2 Rakaat dengan Ruku' dan Sujud", "4 Rakaat tanpa Sujud", "4 Kali Takbir tanpa Ruku' dan Sujud", "1 Rakaat saja"],
+                answer: 2,
+                desc: "Shalat jenazah dikerjakan secara berdiri tegak dengan 4 kali takbir, tanpa gerakan ruku' dan sujud."
+            },
+            {
+                q: "8. Bacaan yang dibaca setelah Takbir Kedua pada Shalat Jenazah adalah...",
+                options: ["Surah Al-Fatihah", "Shalawat Nabi", "Doa untuk Jenazah", "Salam"],
+                answer: 1,
+                desc: "Urutan bacaan Shalat Jenazah: Takbir 1 (Al-Fatihah), Takbir 2 (Shalawat Nabi), Takbir 3 (Doa Jenazah), Takbir 4 (Doa penutup & Salam)."
+            },
+            {
+                q: "9. Posisi imam saat menyalati jenazah perempuan yang benar menurut fikih adalah...",
+                options: ["Sejajar dengan kepala jenazah", "Sejajar dengan pinggang/lambung jenazah", "Sejajar dengan kaki jenazah", "Di belakang dada jenazah"],
+                answer: 1,
+                desc: "Untuk jenazah perempuan, imam berdiri sejajar dengan bagian pinggang/lambung jenazah."
+            },
+            {
+                q: "10. Amalan sunnah yang dianjurkan oleh imam sebelum melaksanakan Shalat Istisqa adalah...",
+                options: ["Menyembelih hewan kurban", "Mengajak masyarakat berpuasa 3 hari dan bertaubat", "Mengadakan pesta makan bersama", "Mandi di sungai"],
+                answer: 1,
+                desc: "Sebelum shalat Istisqa, masyarakat dianjurkan berpuasa 3-4 hari, bertaubat, dan banyak bersedekah."
+            },
+            {
+                q: "11. Gerhana Bulan dalam fikih Islam disebut dengan istilah...",
+                options: ["Kusuf", "Khusuf", "Khasf", "Khusyus"],
+                answer: 1,
+                desc: "Gerhana Bulan disebut Khusuf al-Qamar (ﺧُﺴُﻮﻑُ ﺍﻟْﻘَﻤَﺮِ)."
+            },
+            {
+                q: "12. Bacaan doa pada takbir ketiga shalat jenazah untuk jenazah laki-laki berbunyi...",
+                options: ["Allahummaghfirlaha warhamha...", "Allahummaghfirlahu warhamhu...", "Allahumma shalli 'ala muhammad", "Subhanallah walhamdulillah"],
+                answer: 1,
+                desc: "Dhamir (kata ganti) untuk jenazah laki-laki tunggal adalah '-hu' (Allahummaghfirlahu...)."
+            },
+            {
+                q: "13. Khutbah Shalat Istisqa dilaksanakan pada waktu...",
+                options: ["Sebelum shalat dimulai", "Setelah selesai shalat dua rakaat", "Di tengah-tengah shalat", "Boleh kapan saja"],
+                answer: 1,
+                desc: "Khutbah shalat Istisqa dilaksanakan setelah selesai menunaikan shalat dua rakaat."
+            },
+            {
+                q: "14. Sikap yang harus ditunjukkan saat terjadi gerhana sesuai ajaran Nabi SAW adalah...",
+                options: ["Bersembunyi di bawah meja", "Memukul kentongan / benda nyaring", "Memperbanyak doa, takbir, shalat, dan sedekah", "Tidur hingga selesai"],
+                answer: 2,
+                desc: "Nabi SAW memerintahkan umatnya untuk berdoa, bertakbir, shalat gerhana, dan bersedekah."
+            },
+            {
+                q: "15. Menyalati jenazah sesama muslim merupakan cerminan dari sikap...",
+                options: ["Sombong", "Tanggung jawab sosial & kepedulian sesama", "Individualis", "Mencari pujian"],
+                answer: 1,
+                desc: "Menyalati jenazah merupakan wujud solidaritas, kepedulian, dan penghormatan terakhir bagi sesama muslim."
+            }
+        ];
+
+        // Evaluasi Akhir Data (20 Questions)
+        const evalData = [
+            { q: "1. Peristiwa tertutupnya cahaya matahari oleh bulan dinamakan...", options: ["Gerhana Bulan", "Gerhana Matahari", "Kemarau Panjang", "Tsunami"], answer: 1 },
+            { q: "2. Hukum Shalat Gerhana Matahari bagi orang mukallaf adalah...", options: ["Fardhu 'Ain", "Sunnah Muakkad", "Harus", "Mubah"], answer: 1 },
+            { q: "3. Lafal 'Ushallii sunnatal likusuufisy-syamsi...' merupakan niat untuk shalat...", options: ["Gerhana Bulan", "Gerhana Matahari", "Istisqa", "Jenazah"], answer: 1 },
+            { q: "4. Shalat Gerhana terdiri atas 2 rakaat. Jumlah ruku' dalam seluruh shalat gerhana adalah...", options: ["2 kali", "4 kali", "6 kali", "8 kali"], answer: 1 },
+            { q: "5. Shalat Istisqa bertujuan untuk...", options: ["Meminta hujan", "Meminta keselamatan", "Mengubur jenazah", "Menyambut gerhana"], answer: 0 },
+            { q: "6. Pada rakaat kedua Shalat Istisqa, jumlah takbir tambahan adalah...", options: ["7 kali", "5 kali", "3 kali", "1 kali"], answer: 1 },
+            { q: "7. Ciri khas tindakan khatib pada khutbah Istisqa di akhir doa adalah...", options: ["Sambil duduk", "Membalikkan kain selendang/sorban", "Mematikan lampu", "Membawa tongkat besi"], answer: 1 },
+            { q: "8. Shalat Jenazah hukumnya Fardhu Kifayah, artinya...", options: ["Wajib bagi setiap individu", "Wajib jika ada yang mewakili, gugur bagi yang lain", "Tidak wajib sama sekali", "Hanya wajib bagi ustadz"], answer: 1 },
+            { q: "9. Di bawah ini yang BUKAN rukun shalat jenazah adalah...", options: ["Niat", "Membaca Al-Fatihah", "Ruku' dan Sujud", "Mengucapkan Salam"], answer: 2 },
+            { q: "10. Membaca Shalawat Nabi pada shalat jenazah dilakukan setelah...", options: ["Takbir Pertama", "Takbir Kedua", "Takbir Ketiga", "Takbir Keempat"], answer: 1 },
+            { q: "11. Doa 'Allahummaghfirlaha warhamha...' dibaca saat menyalati jenazah...", options: ["Laki-laki", "Perempuan", "Anak kecil", "Ghaib"], answer: 1 },
+            { q: "12. Posisi berdiri imam saat menyalati jenazah laki-laki tepat di dekat...", options: ["Kaki", "Kepala", "Pinggang", "Lutut"], answer: 1 },
+            { q: "13. Shalat yang dikerjakan tanpa ruku' dan sujud sama sekali adalah...", options: ["Shalat Kusuf", "Shalat Istisqa", "Shalat Jenazah", "Shalat Dhuha"], answer: 2 },
+            { q: "14. Apabila jenazah berada di tempat yang jauh/tidak ada di depan jamaah, dinamakan Shalat...", options: ["Kusuf", "Ghaib", "Tahajud", "Khusuf"], answer: 1 },
+            { q: "15. Istighfar yang dibaca khatib di awal khutbah pertama shalat Istisqa sebanyak...", options: ["7 kali", "9 kali", "11 kali", "33 kali"], answer: 1 },
+            { q: "16. Mengingat kematian (Ziaratul Maut) merupakan salah satu hikmah dari shalat...", options: ["Gerhana", "Istisqa", "Jenazah", "Tarawih"], answer: 2 },
+            { q: "17. Hukum melaksanakan Khutbah setelah Shalat Gerhana bagi jamaah adalah...", options: ["Wajib", "Sunnah", "Haram", "Makruh"], answer: 1 },
+            { q: "18. Lafal 'Allaahummasqinaa ghaitsan mughiitsan...' adalah doa khusus saat...", options: ["Melihat gerhana", "Shalat Istisqa", "Takbir keempat jenazah", "Awal tahun"], answer: 1 },
+            { q: "19. Apabila seorang muslim meninggal dunia dan tidak ada seorang pun yang menyalatinya, maka...", options: ["Seluruh warga satu kawasan berdosa", "Tidak berpengaruh apa-apa", "Mendapat pahala", "Dianggap biasa"], answer: 0 },
+            { q: "20. Shalat Khusuf dilakukan ketika terjadi...", options: ["Gerhana Matahari", "Gerhana Bulan", "Hujan Lebat", "Banjir"], answer: 1 }
+        ];
+
+        // Simulation Data Steps
+        const simData = {
+            gerhana: [
+                { title: "1. Niat & Takbiratul Ihram", desc: "Berdiri tegak, berniat shalat gerhana (Kusuf/Khusuf) dan melakukan takbiratul ihram.", arabic: "أُصَلِّي سُنَّةَ لِكُسُوْفِ الشَّمْسِ رَكْعَتَيْنِ ...", icon: "fa-hands-praying" },
+                { title: "2. Membaca Al-Fatihah & Surah Panjang", desc: "Membaca doa iftitah, Surah Al-Fatihah, dilanjutkan membaca surah Al-Qur'an (dianjurkan surah yang panjang).", arabic: "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ ...", icon: "fa-book-open" },
+                { title: "3. Ruku' Pertama", desc: "Ruku' dengan membaca tasbih ruku' dalam durasi yang cukup lama.", arabic: "سُبْحَانَ رَبِّيَ الْعَظِيمِ وَبِحَمْدِهِ", icon: "fa-person-dots-from-line" },
+                { title: "4. Bangkit (I'tidal) & Membaca Al-Fatihah Lagi", desc: "Bangkit berdiri i'tidal, tetapi TIDAK langsung sujud. Dilanjutkan membaca Al-Fatihah & surah kedua.", arabic: "سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ ...", icon: "fa-child" },
+                { title: "5. Ruku' Kedua", desc: "Melakukan ruku' kedua yang durasinya sedikit lebih pendek dari ruku' pertama.", arabic: "سُبْحَانَ رَبِّيَ الْعَظِيمِ وَبِحَمْدِهِ", icon: "fa-person-dots-from-line" },
+                { title: "6. Sujud Dua Kali & Salam", desc: "Bangkit i'tidal kedua, lalu sujud 2 kali seperti biasa. Ulangi rakaat ke-2 lalu tasyahud akhir dan salam.", arabic: "السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ", icon: "fa-hands-holding" }
+            ],
+            jenazah: [
+                { title: "1. Takbir Pertama (Niat & Al-Fatihah)", desc: "Berdiri tegak, melakukan Takbiratul Ihram bersama niat, lalu membaca Surah Al-Fatihah.", arabic: "أُصَلِّي عَلَى هٰذَا المَيِّتِ أَرْبَعَ تَكْبِيْرَاتٍ ...", icon: "fa-1" },
+                { title: "2. Takbir Kedua (Shalawat Nabi)", desc: "Melakukan takbir kedua tanpa ruku', lalu membaca Shalawat kepada Nabi Muhammad SAW.", arabic: "اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ ...", icon: "fa-2" },
+                { title: "3. Takbir Ketiga (Doa Jenazah)", desc: "Takbir ketiga, kemudian membaca doa khusus pengampunan untuk jenazah.", arabic: "اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ وَعَافِهِ وَاعْفُ عَنْهُ", icon: "fa-3" },
+                { title: "4. Takbir Keempat & Salam", desc: "Takbir keempat, membaca doa kebaikan penutup, lalu mengucapkan salam ke kanan dan kiri.", arabic: "السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ", icon: "fa-4" }
+            ]
+        };
+
+        // State Variables
+        let currentSimType = 'gerhana';
+        let currentSimStep = 0;
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let currentEvalIndex = 0;
+        let evalAnswers = [];
+
+        // INITIALIZATION
+        window.onload = function() {
+            // Load saved student info if available
+            const savedName = localStorage.getItem('mpi_student_name');
+            const savedClass = localStorage.getItem('mpi_student_class');
+            if (savedName) {
+                document.getElementById('input-student-name').value = savedName;
+                document.getElementById('input-student-class').value = savedClass || '';
+            }
+        };
+
+        // NAVIGATION CONTROL
+        function navigateTo(pageId) {
+            pages.forEach(p => {
+                document.getElementById(`page-${p}`).classList.add('hidden');
+            });
+            document.getElementById(`page-${pageId}`).classList.remove('hidden');
+
+            const header = document.getElementById('main-header');
+            if (pageId === 'welcome') {
+                header.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Initialize Page Specific Data
+            if (pageId === 'simulasi') loadSimulation('gerhana');
+            if (pageId === 'kuis' && currentQuizIndex === 0) renderQuizQuestion();
+            if (pageId === 'evaluasi' && currentEvalIndex === 0) renderEvalQuestion();
+
+            updateProgressBar();
+        }
+
+        function startApp() {
+            const nameInput = document.getElementById('input-student-name').value.trim();
+            const classInput = document.getElementById('input-student-class').value.trim();
+
+            if (!nameInput) {
+                alert('Silakan masukkan nama lengkap kamu terlebih dahulu!');
+                return;
+            }
+
+            studentData.name = nameInput;
+            studentData.class = classInput;
+
+            localStorage.setItem('mpi_student_name', nameInput);
+            localStorage.setItem('mpi_student_class', classInput);
+
+            document.getElementById('welcome-name').textContent = nameInput;
+            document.getElementById('header-student-name').textContent = nameInput;
+
+            navigateTo('menu');
+        }
+
+        function updateProgressBar() {
+            // Simple visual progress simulation
+            let progress = 20;
+            if (studentData.name) progress += 20;
+            document.getElementById('study-progress-bar').style.width = `${progress}%`;
+        }
+
+        // INNER TAB SWITCHING FOR MATERI
+        function switchTab(materiPrefix, tabKey) {
+            // Hide all tab contents of this materi
+            const contents = document.querySelectorAll(`[id^="${materiPrefix}-content-"]`);
+            contents.forEach(el => el.classList.add('hidden'));
+
+            // Remove active class from buttons
+            const buttons = document.querySelectorAll(`[id^="${materiPrefix}-btn-"]`);
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show target
+            document.getElementById(`${materiPrefix}-content-${tabKey}`).classList.remove('hidden');
+            document.getElementById(`${materiPrefix}-btn-${tabKey}`).classList.add('active');
+        }
+
+        // SIMULATION LOGIC
+        function loadSimulation(type) {
+            currentSimType = type;
+            currentSimStep = 0;
+
+            document.querySelectorAll('.sim-tab').forEach(b => {
+                b.classList.remove('bg-emerald-700', 'text-white');
+                b.classList.add('bg-slate-200', 'text-slate-700');
+            });
+
+            document.getElementById(`sim-btn-${type}`).classList.remove('bg-slate-200', 'text-slate-700');
+            document.getElementById(`sim-btn-${type}`).classList.add('bg-emerald-700', 'text-white');
+
+            renderSimulationStep();
+        }
+
+        function renderSimulationStep() {
+            const steps = simData[currentSimType];
+            const data = steps[currentSimStep];
+
+            document.getElementById('sim-title').textContent = `SIMULASI: SHALAT ${currentSimType.toUpperCase()}`;
+            document.getElementById('sim-step-indicator').textContent = `Langkah ${currentSimStep + 1} dari ${steps.length}`;
+            document.getElementById('sim-step-title').textContent = data.title;
+            document.getElementById('sim-step-desc').textContent = data.desc;
+            document.getElementById('sim-arabic').textContent = data.arabic;
+            
+            document.getElementById('sim-icon').innerHTML = `<i class="fas ${data.icon}"></i>`;
+
+            document.getElementById('sim-prev-btn').disabled = (currentSimStep === 0);
+            document.getElementById('sim-next-btn').disabled = (currentSimStep === steps.length - 1);
+        }
+
+        function nextSimStep() {
+            if (currentSimStep < simData[currentSimType].length - 1) {
+                currentSimStep++;
+                renderSimulationStep();
+            }
+        }
+
+        function prevSimStep() {
+            if (currentSimStep > 0) {
+                currentSimStep--;
+                renderSimulationStep();
+            }
+        }
+
+        // KUIS LOGIC (15 SOAL WITH IMMEDIATE FEEDBACK)
+        function renderQuizQuestion() {
+            const data = quizData[currentQuizIndex];
+            document.getElementById('quiz-progress-text').textContent = `Soal ${currentQuizIndex + 1} / ${quizData.length}`;
+            document.getElementById('quiz-question').textContent = data.q;
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+
+            data.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3 rounded-lg border border-slate-200 hover:bg-emerald-50 transition text-xs md:text-sm font-medium text-slate-700 flex items-center gap-2";
+                btn.innerHTML = `<span class="w-6 h-6 rounded-full bg-slate-100 border text-center text-xs flex items-center justify-center font-bold text-slate-600">${String.fromCharCode(65 + idx)}</span> ${opt}`;
+                btn.onclick = () => selectQuizAnswer(idx);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectQuizAnswer(selectedIndex) {
+            const data = quizData[currentQuizIndex];
+            const optionsBtns = document.getElementById('quiz-options').children;
+
+            // Disable all option buttons
+            for (let btn of optionsBtns) {
+                btn.disabled = true;
+                btn.classList.add('cursor-not-allowed');
+            }
+
+            const feedbackBox = document.getElementById('quiz-feedback');
+            const feedbackTitle = document.getElementById('quiz-feedback-title');
+            const feedbackDesc = document.getElementById('quiz-feedback-desc');
+
+            feedbackBox.classList.remove('hidden');
+
+            if (selectedIndex === data.answer) {
+                quizScore++;
+                optionsBtns[selectedIndex].classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+                feedbackBox.className = "p-4 rounded-xl text-xs mb-4 bg-emerald-50 border border-emerald-300 text-emerald-900";
+                feedbackTitle.innerHTML = '<i class="fas fa-check-circle text-emerald-600 mr-1"></i> Jawaban Kamu Benar!';
+            } else {
+                optionsBtns[selectedIndex].classList.add('bg-red-100', 'border-red-500', 'text-red-900');
+                optionsBtns[data.answer].classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+                feedbackBox.className = "p-4 rounded-xl text-xs mb-4 bg-red-50 border border-red-300 text-red-900";
+                feedbackTitle.innerHTML = '<i class="fas fa-times-circle text-red-600 mr-1"></i> Jawaban Kamu Kurang Tepat!';
+            }
+
+            feedbackDesc.textContent = data.desc;
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            if (currentQuizIndex < quizData.length - 1) {
+                currentQuizIndex++;
+                renderQuizQuestion();
+            } else {
+                // Show Quiz Result
+                document.getElementById('quiz-box').classList.add('hidden');
+                document.getElementById('quiz-result-box').classList.remove('hidden');
+                document.getElementById('quiz-final-score').textContent = `${quizScore} / ${quizData.length}`;
+            }
+        }
+
+        function resetQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-result-box').classList.add('hidden');
+            document.getElementById('quiz-box').classList.remove('hidden');
+            renderQuizQuestion();
+        }
+
+        // EVALUASI AKHIR LOGIC (20 SOAL)
+        function renderEvalQuestion() {
+            const data = evalData[currentEvalIndex];
+            document.getElementById('eval-progress-text').textContent = `Soal ${currentEvalIndex + 1} / ${evalData.length}`;
+            document.getElementById('eval-question').textContent = data.q;
+
+            const optionsContainer = document.getElementById('eval-options');
+            optionsContainer.innerHTML = '';
+
+            data.options.forEach((opt, idx) => {
+                const isSelected = evalAnswers[currentEvalIndex] === idx;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3 rounded-lg border transition text-xs md:text-sm font-medium flex items-center gap-2 ${isSelected ? 'bg-emerald-700 text-white border-emerald-800' : 'border-slate-200 hover:bg-slate-50 text-slate-700'}`;
+                btn.innerHTML = `<span class="w-6 h-6 rounded-full ${isSelected ? 'bg-emerald-900 text-white' : 'bg-slate-100 text-slate-600'} text-center text-xs flex items-center justify-center font-bold">${String.fromCharCode(65 + idx)}</span> ${opt}`;
+                btn.onclick = () => {
+                    evalAnswers[currentEvalIndex] = idx;
+                    renderEvalQuestion();
+                };
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function nextEvalQuestion() {
+            if (evalAnswers[currentEvalIndex] === undefined) {
+                alert('Silakan pilih salah satu jawaban terlebih dahulu!');
+                return;
+            }
+
+            if (currentEvalIndex < evalData.length - 1) {
+                currentEvalIndex++;
+                renderEvalQuestion();
+            } else {
+                finishEval();
+            }
+        }
+
+        function finishEval() {
+            let correct = 0;
+            evalData.forEach((item, idx) => {
+                if (evalAnswers[idx] === item.answer) {
+                    correct++;
+                }
+            });
+
+            const total = evalData.length;
+            const wrong = total - correct;
+            const percentage = Math.round((correct / total) * 100);
+
+            document.getElementById('eval-box').classList.add('hidden');
+            document.getElementById('eval-result-box').classList.remove('hidden');
+
+            document.getElementById('eval-score-percent').textContent = `${percentage}%`;
+            document.getElementById('eval-correct-count').textContent = correct;
+            document.getElementById('eval-wrong-count').textContent = wrong;
+
+            const categoryTag = document.getElementById('eval-category-tag');
+            const categoryTitle = document.getElementById('eval-category-title');
+            const badge = document.getElementById('eval-icon-badge');
+
+            if (percentage >= 85) {
+                categoryTag.textContent = "Sangat Baik (A)";
+                categoryTitle.textContent = "Luar Biasa & Sangat Memuaskan!";
+                badge.className = "w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-3 text-4xl shadow-lg bg-emerald-100 text-emerald-700 border-4 border-emerald-300";
+            } else if (percentage >= 70) {
+                categoryTag.textContent = "Baik (B)";
+                categoryTitle.textContent = "Hasil Yang Baik!";
+                badge.className = "w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-3 text-4xl shadow-lg bg-blue-100 text-blue-700 border-4 border-blue-300";
+            } else if (percentage >= 55) {
+                categoryTag.textContent = "Cukup (C)";
+                categoryTitle.textContent = "Cukup Baik, Perlu Belajar Lagi";
+                badge.className = "w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-3 text-4xl shadow-lg bg-amber-100 text-amber-700 border-4 border-amber-300";
+            } else {
+                categoryTag.textContent = "Perlu Bimbingan (D)";
+                categoryTitle.textContent = "Jangan Berkecil Hati, Ulangi Materi!";
+                badge.className = "w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-3 text-4xl shadow-lg bg-red-100 text-red-700 border-4 border-red-300";
+            }
+
+            // Save score to local storage
+            localStorage.setItem('mpi_eval_score', percentage);
+        }
+
+        function resetEval() {
+            currentEvalIndex = 0;
+            evalAnswers = [];
+            document.getElementById('eval-result-box').classList.add('hidden');
+            document.getElementById('eval-box').classList.remove('hidden');
+            renderEvalQuestion();
+        }
+    </script>
+</body>
+</html>
